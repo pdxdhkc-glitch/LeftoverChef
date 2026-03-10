@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LeftoverChef.StoragePage"
+             Title="Storage"
+             BackgroundImageSource="bg.png"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20">
+
+                <Border BackgroundColor="#E6FFFFFF" Padding="10" Margin="0,0,0,10" Stroke="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Label Text="📜 All Your Recipes" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="Black"/>
+                </Border>
+
+                <Button x:Name="UndoButton" Text="↩️ Undo Delete" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF9500" TextColor="White" CornerRadius="10" Margin="0,0,0,10" IsVisible="False" Clicked="OnUndoClicked"/>
+
+                <VerticalStackLayout x:Name="AllRecipesList" Spacing="0">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,5,0,5" Padding="15" BackgroundColor="#F9FFFFFF" Stroke="Transparent">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="#4CAF50"/>
+                                        <Label Text="{Binding Ingredients, StringFormat='Ingredients: {0}'}" FontSize="14" TextColor="Black"/>
+                                    </VerticalStackLayout>
+
+                                    <Button Grid.Column="1" Text="🗑️" FontSize="20" BackgroundColor="#FF3B30" TextColor="White" WidthRequest="50" HeightRequest="50" CornerRadius="25" VerticalOptions="Center" CommandParameter="{Binding .}" Clicked="OnDeleteRecipeClicked"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="1" Text="🏠 Back to Home" FontSize="18" FontAttributes="Bold" BackgroundColor="#2B0B98" TextColor="White" CornerRadius="0" HeightRequest="60" Clicked="OnHomeClicked"/>
+    </Grid>
+</ContentPage>

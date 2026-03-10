@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LeftoverChef.MainPage"
+             NavigationPage.HasNavigationBar="False">
+    <Grid>
+
+        <Image Source="bg.png" 
+               Aspect="AspectFill" 
+               HorizontalOptions="Fill" 
+               VerticalOptions="Fill" />
+
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Center">
+
+                <Image Source="logo.png" 
+                       Aspect="AspectFit" 
+                       HeightRequest="180" 
+                       HorizontalOptions="Center" 
+                       Margin="0,20,0,0"/>
+
+                <Border BackgroundColor="#F0FFFFFF" Padding="20" Stroke="Transparent">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="LeftoverChef" FontSize="32" FontAttributes="Bold" TextColor="#2B0B98" HorizontalOptions="Center" CharacterSpacing="2"/>
+                        <Label Text="💡 Don't waste food! Be creative." FontSize="16" FontAttributes="Bold" TextColor="#FF6B6B" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="🔍 Search Recipes" FontSize="20" FontAttributes="Bold" BackgroundColor="#FFA500" TextColor="White" CornerRadius="25" HeightRequest="60" Clicked="OnSearchClicked"/>
+                <Button Text="📚 Recipe Storage" FontSize="20" FontAttributes="Bold" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="25" HeightRequest="60" Clicked="OnStorageClicked"/>
+                <Button Text="✍️ Create New Recipe" FontSize="20" FontAttributes="Bold" BackgroundColor="#2196F3" TextColor="White" CornerRadius="25" HeightRequest="60" Clicked="OnCreateClicked"/>
+                <Button Text="❌ Exit App" FontSize="18" FontAttributes="Bold" BackgroundColor="#808080" TextColor="White" CornerRadius="25" HeightRequest="50" Margin="0,30,0,0" Clicked="OnExitClicked"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>
