@@ -2,40 +2,71 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LeftoverChef.MainPage"
-             NavigationPage.HasNavigationBar="False">
-    <Grid>
+             BackgroundImageSource="bg.jpg"
+             Shell.NavBarIsVisible="False" NavigationPage.HasNavigationBar="False">
 
-        <Image Source="bg.png" 
-               Aspect="AspectFill" 
-               HorizontalOptions="Fill" 
-               VerticalOptions="Fill" />
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0" Padding="25">
+            <VerticalStackLayout Spacing="18" VerticalOptions="Center">
 
-        <ScrollView>
-            <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Center">
+                <Image Source="logo.jpg" HeightRequest="130" HorizontalOptions="Center" Margin="0,0,0,10"/>
 
-                <Image Source="logo.png" 
-                       Aspect="AspectFit" 
-                       HeightRequest="180" 
-                       HorizontalOptions="Center" 
-                       Margin="0,20,0,0"/>
+                <Label Text="LeftoverChef" FontSize="36" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#2C3E50"/>
+                <Label Text="Turn your leftovers into a feast!" FontSize="16" HorizontalOptions="Center" TextColor="#7F8C8D" Margin="0,0,0,20"/>
 
-                <Border BackgroundColor="#F0FFFFFF" Padding="20" Stroke="Transparent">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="15" />
-                    </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="5">
-                        <Label Text="LeftoverChef" FontSize="32" FontAttributes="Bold" TextColor="#2B0B98" HorizontalOptions="Center" CharacterSpacing="2"/>
-                        <Label Text="💡 Don't waste food! Be creative." FontSize="16" FontAttributes="Bold" TextColor="#FF6B6B" HorizontalOptions="Center"/>
-                    </VerticalStackLayout>
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#E3F2FD" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFridgeClicked"/>
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="❄️" FontSize="35" VerticalOptions="Center"/>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="My Fridge" FontSize="20" FontAttributes="Bold" TextColor="#1565C0"/>
+                            <Label Text="Check your ingredients" FontSize="13" TextColor="#555555"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
                 </Border>
 
-                <Button Text="🔍 Search Recipes" FontSize="20" FontAttributes="Bold" BackgroundColor="#FFA500" TextColor="White" CornerRadius="25" HeightRequest="60" Clicked="OnSearchClicked"/>
-                <Button Text="📚 Recipe Storage" FontSize="20" FontAttributes="Bold" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="25" HeightRequest="60" Clicked="OnStorageClicked"/>
-                <Button Text="✍️ Create New Recipe" FontSize="20" FontAttributes="Bold" BackgroundColor="#2196F3" TextColor="White" CornerRadius="25" HeightRequest="60" Clicked="OnCreateClicked"/>
-                <Button Text="❌ Exit App" FontSize="18" FontAttributes="Bold" BackgroundColor="#808080" TextColor="White" CornerRadius="25" HeightRequest="50" Margin="0,30,0,0" Clicked="OnExitClicked"/>
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#FFF3E0" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnStorageClicked"/>
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="📖" FontSize="35" VerticalOptions="Center"/>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="Recipe Storage" FontSize="20" FontAttributes="Bold" TextColor="#E65100"/>
+                            <Label Text="Browse Chinese &amp; Western dishes" FontSize="13" TextColor="#555555"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
 
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#F3E5F5" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSearchClicked"/>
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="🔍" FontSize="35" VerticalOptions="Center"/>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="Search Recipes" FontSize="20" FontAttributes="Bold" TextColor="#7B1FA2"/>
+                            <Label Text="Find what to cook" FontSize="13" TextColor="#555555"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#E8F5E9" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCreateClicked"/>
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="✍️" FontSize="35" VerticalOptions="Center"/>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="Create Recipe" FontSize="20" FontAttributes="Bold" TextColor="#2E7D32"/>
+                            <Label Text="Draft your new dish" FontSize="13" TextColor="#555555"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
             </VerticalStackLayout>
         </ScrollView>
-
+        <Button Grid.Row="1" Text="Exit Application" Clicked="OnExitClicked" BackgroundColor="#333333" HeightRequest="60" CornerRadius="0"/>
     </Grid>
 </ContentPage>

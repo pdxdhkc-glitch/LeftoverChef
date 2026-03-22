@@ -1,41 +1,20 @@
+// SearchPage.xaml.cs
+using System.Linq;
 namespace LeftoverChef;
 
-// Recipe search logic
-// 食谱搜索逻辑
 public partial class SearchPage : ContentPage
 {
-    // Initialize search page
-    // 初始化搜索页面
     public SearchPage() { InitializeComponent(); }
-
-    // Filter recipes by ingredients
-    // 根据食材筛选食谱
-    private void OnFindMatchingRecipesClicked(object sender, EventArgs e)
+    private void OnSearchClicked(object sender, EventArgs e)
     {
-        // Get search keyword
-        // 获取搜索关键词
-        string searchKeyword = IngredientInput.Text?.Trim() ?? string.Empty;
-        if (string.IsNullOrEmpty(searchKeyword))
+        ResultsList.Children.Clear();
+        var kw = SearchEntry.Text?.ToLower() ?? "";
+        if (string.IsNullOrEmpty(kw)) return;
+        var res = App.GlobalRecipes.Where(r => r.Name.ToLower().Contains(kw)).ToList();
+        foreach (var r in res)
         {
-            BindableLayout.SetItemsSource(ResultsList, null);
-            return;
+            ResultsList.Children.Add(new Border { BackgroundColor = Color.FromRgba(255, 255, 255, 0.8), Padding = 15, Content = new Label { Text = "馃摉 " + r.Name, TextColor = Colors.Black, FontSize = 18 } });
         }
-
-        // Perform case-insensitive search
-        // 执行不区分大小写的搜索
-        var matchedRecipes = App.GlobalRecipes
-            .Where(r => r.Ingredients.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase))
-            .ToList();
-
-        // Update the results display
-        // 更新结果显示列表
-        BindableLayout.SetItemsSource(ResultsList, matchedRecipes);
     }
-
-    // Return to main menu
-    // 返回主菜单
-    private async void OnHomeClicked(object sender, EventArgs e)
-    {
-        await Navigation.PopToRootAsync();
-    }
+    private async void OnHomeClicked(object sender, EventArgs e) => await Navigation.PopAsync();
 }

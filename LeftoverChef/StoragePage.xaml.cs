@@ -1,61 +1,78 @@
+ï»¿using System.Linq;
+using System.Threading.Tasks;
+
 namespace LeftoverChef;
 
 public partial class StoragePage : ContentPage
 {
-    // Store the deleted recipe and its index for the Undo feature
-    // ´æ´¢±»É¾³ıµÄÊ³Æ×ºÍËüµÄÎ»ÖÃ£¬ÓÃÓÚ³·»Ø¹¦ÄÜ
-    private Recipe? _lastDeletedRecipe;
-    private int _lastDeletedIndex = -1;
+    private Stack<List<Recipe>> _undoStack = new Stack<List<Recipe>>(); // æ’¤é”€æ ˆ
+    private string _currentCat = ""; // å½“å‰é€‰æ‹©çš„åˆ†ç±»
+    private int _state = 0; // 0:åˆ†ç±»é¡µ, 1:åˆ—è¡¨é¡µ, 2:è¯¦æƒ…é¡µ
 
     public StoragePage() { InitializeComponent(); }
 
-    protected override void OnAppearing()
+    // å¤„ç†åˆ†ç±»ç‚¹å‡»ï¼šè·³è½¬åˆ°åˆ—è¡¨
+    private async void OnCategoryTapped(object sender, TappedEventArgs e)
     {
-        base.OnAppearing();
-        BindableLayout.SetItemsSource(AllRecipesList, App.GlobalRecipes);
+        var param = e.Parameter?.ToString();
+        if (string.IsNullOrEmpty(param)) return;
+        _currentCat = param;
+        ListTitleLabel.Text = _currentCat + " Recipes";
+        RefreshList();
+        await Transition(CategoryView, RecipeListGrid);
+        _state = 1; DynamicBottomButton.Text = "â¬…ï¸ Categories";
     }
 
-    // Delete Logic / É¾³ıÂß¼­
-    private async void OnDeleteRecipeClicked(object sender, EventArgs e)
+    // åŠ¨æ€ç”Ÿæˆé£Ÿè°±å¡ç‰‡åˆ—è¡¨
+    private void RefreshList()
     {
-        var button = sender as Button;
-        var recipeToDelete = button?.CommandParameter as Recipe;
-
-        if (recipeToDelete != null)
+        RecipeListContainer.Children.Clear();
+        var list = App.GlobalRecipes.Where(r => r.Category == _currentCat).ToList();
+        foreach (var r in list)
         {
-            bool isConfirm = await DisplayAlertAsync("Delete", $"Delete '{recipeToDelete.Name}'?", "Yes", "No");
-            if (isConfirm)
-            {
-                // Backup before deleting / É¾³ıÇ°ÏÈ±¸·İÊı¾İ
-                _lastDeletedIndex = App.GlobalRecipes.IndexOf(recipeToDelete);
-                _lastDeletedRecipe = recipeToDelete;
+            var card = new Border { StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 10 }, BackgroundColor = Color.FromRgba(255, 255, 255, 0.8), Padding = 15, Margin = new Thickness(0, 5) };
+            var grid = new Grid { ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
 
-                // Remove from database / ´ÓÊı¾İ¿âÉ¾³ı
-                App.GlobalRecipes.Remove(recipeToDelete);
+            var label = new Label { Text = "ğŸ“– " + r.Name, VerticalOptions = LayoutOptions.Center, FontSize = 18, TextColor = Colors.Black };
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += async (s, e) => {
+                DetailName.Text = r.Name; DetailTime.Text = "â±ï¸ " + r.CookingTime;
+                DetailIngredients.Text = r.Ingredients; DetailInstructions.Text = r.Instructions; DetailDescription.Text = r.Description;
+                await Transition(RecipeListGrid, DetailView); _state = 2; DynamicBottomButton.Text = "â¬…ï¸ List";
+            };
+            label.GestureRecognizers.Add(tap);
 
-                // Show the Undo button / ÏÔÊ¾³·»Ø°´Å¥
-                UndoButton.IsVisible = true;
-            }
+            var delBtn = new Button { Text = "ğŸ—‘ï¸", TextColor = Colors.Red, BackgroundColor = Colors.Transparent, FontSize = 20 };
+            delBtn.Clicked += (s, e) => { _undoStack.Push(new List<Recipe> { r }); App.GlobalRecipes.Remove(r); RefreshList(); };
+
+            grid.Add(label, 0); grid.Add(delBtn, 1);
+            card.Content = grid;
+            RecipeListContainer.Children.Add(card);
         }
     }
 
-    // Undo Logic / ³·»ØÂß¼­
-    private void OnUndoClicked(object sender, EventArgs e)
+    // å…¨åˆ é€»è¾‘
+    private void OnDeleteAllClicked(object sender, EventArgs e)
     {
-        if (_lastDeletedRecipe != null && _lastDeletedIndex >= 0)
-        {
-            // Restore recipe to its original position / »Ö¸´Ê³Æ×µ½Ô­À´µÄÎ»ÖÃ
-            App.GlobalRecipes.Insert(_lastDeletedIndex, _lastDeletedRecipe);
-
-            // Clear backup and hide button / Çå¿Õ±¸·İ²¢Òş²Ø°´Å¥
-            _lastDeletedRecipe = null;
-            _lastDeletedIndex = -1;
-            UndoButton.IsVisible = false;
-        }
+        var current = App.GlobalRecipes.Where(r => r.Category == _currentCat).ToList();
+        if (current.Count > 0) { _undoStack.Push(new List<Recipe>(current)); foreach (var r in current) App.GlobalRecipes.Remove(r); RefreshList(); }
     }
 
-    private async void OnHomeClicked(object sender, EventArgs e)
+    // æ’¤é”€é€»è¾‘
+    private async void OnUndoClicked(object sender, EventArgs e)
     {
-        await Navigation.PopToRootAsync();
+        if (_undoStack.Count > 0) { foreach (var r in _undoStack.Pop()) App.GlobalRecipes.Add(r); RefreshList(); }
+        else await DisplayAlertAsync("Undo", "Nothing to restore", "OK");
     }
+
+    // åŠ¨æ€è¿”å›æŒ‰é’®ï¼šæ ¹æ®å½“å‰çŠ¶æ€å›é€€è§†å›¾
+    private async void OnDynamicBottomClicked(object sender, EventArgs e)
+    {
+        if (_state == 2) { await Transition(DetailView, RecipeListGrid); _state = 1; DynamicBottomButton.Text = "â¬…ï¸ Categories"; }
+        else if (_state == 1) { await Transition(RecipeListGrid, CategoryView); _state = 0; DynamicBottomButton.Text = "ğŸ  Home"; }
+        else await Navigation.PopAsync();
+    }
+
+    // è§†å›¾åˆ‡æ¢åŠ¨ç”»æ–¹æ³•
+    private async Task Transition(VisualElement h, VisualElement s) { await h.FadeToAsync(0, 150); h.IsVisible = false; s.Opacity = 0; s.IsVisible = true; await s.FadeToAsync(1, 150); }
 }

@@ -1,31 +1,28 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LeftoverChef.CreatePage"
-             Title="Create"
-             BackgroundImageSource="bg.png"
-             NavigationPage.HasNavigationBar="False">
-
+             BackgroundImageSource="create_recipe.jpg"
+             Shell.NavBarIsVisible="False" NavigationPage.HasNavigationBar="False">
     <Grid RowDefinitions="*, Auto">
-        <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="20" Spacing="20">
-                <Border BackgroundColor="#E6FFFFFF" Padding="20" Stroke="Transparent">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="15" />
-                    </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="15">
-
-                        <Label Text="Create New Recipe" FontSize="24" FontAttributes="Bold" TextColor="#2196F3" HorizontalOptions="Center"/>
-                        <Entry x:Name="NewRecipeName" Placeholder="Recipe Name (e.g. Cola Chicken)" BackgroundColor="White"/>
-                        <Entry x:Name="NewRecipeIngredients" Placeholder="Ingredients (e.g. Chicken, Cola)" BackgroundColor="White"/>
-                        <Entry x:Name="NewRecipeDesc" Placeholder="Description (e.g. Sweet and delicious)" BackgroundColor="White"/>
-                        <Button Text="💾 Save Recipe" FontSize="18" FontAttributes="Bold" BackgroundColor="#2196F3" TextColor="White" CornerRadius="10" Clicked="OnSaveClicked"/>
-
-                    </VerticalStackLayout>
-                </Border>
-            </VerticalStackLayout>
+        <ScrollView Grid.Row="0" Padding="25">
+            <Border BackgroundColor="#CCFFFFFF" Padding="20" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Draft New Recipe" FontSize="26" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#2E7D32"/>
+                    <Picker x:Name="CategoryPicker" Title="Select Category" TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Chinese</x:String>
+                            <x:String>Western</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Entry x:Name="NameEntry" Placeholder="Recipe Name" TextColor="Black"/>
+                    <Entry x:Name="TimeEntry" Placeholder="Cooking Time" TextColor="Black"/>
+                    <Entry x:Name="DescEntry" Placeholder="Story/Description" TextColor="Black"/>
+                    <Editor x:Name="IngredientsEditor" Placeholder="Ingredients list..." HeightRequest="80" TextColor="Black"/>
+                    <Editor x:Name="InstructionsEditor" Placeholder="Cooking instructions..." HeightRequest="120" TextColor="Black"/>
+                    <Button Text="Save Recipe" Clicked="OnSaveClicked" BackgroundColor="#2E7D32" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
         </ScrollView>
-
-        <Button Grid.Row="1" Text="🏠 Back to Home" FontSize="18" FontAttributes="Bold" BackgroundColor="#2B0B98" TextColor="White" CornerRadius="0" HeightRequest="60" Clicked="OnHomeClicked"/>
+        <Button Grid.Row="1" Text="🏠 Home" Clicked="OnHomeClicked" BackgroundColor="#2A009F" HeightRequest="60" CornerRadius="0"/>
     </Grid>
 </ContentPage>
