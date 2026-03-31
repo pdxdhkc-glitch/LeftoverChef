@@ -1,4 +1,6 @@
-using System.Linq;
+// File: SearchPage.xaml.cs
+// Role: Real-time search engine for the recipe library.
+// Function: Filters recipes based on keywords and maintains UI consistency with the Storage page.using System.Linq;
 namespace LeftoverChef;
 
 public partial class SearchPage : ContentPage
