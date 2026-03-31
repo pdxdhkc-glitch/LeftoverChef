@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿// File: StoragePage.xaml.cs
+// Role: Recipe library browser and detailed view handler.
+// Function: Dynamically generates recipe cards with category-specific color coding and shadows.
+// Features: Multi-state navigation (Categories -> List -> Detail).using System.Linq;
 using System.Threading.Tasks;
 
 namespace LeftoverChef;
