@@ -1,4 +1,7 @@
-// CreatePage.xaml.cs
+// File: CreatePage.xaml.cs
+// Role: User-generated content (UGC) handler.
+// Function: Validates and saves new user recipes into the global collection.
+// Features: System browser integration for external recipe links.
 namespace LeftoverChef;
 
 public partial class CreatePage : ContentPage
