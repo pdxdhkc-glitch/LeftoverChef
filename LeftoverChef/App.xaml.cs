@@ -1,4 +1,4 @@
-﻿// Local Edit for Conflict Test
+// Local Edit for Conflict Test
 // File: App.xaml.cs
 // Role: The central data hub of LeftoverChef.
 // Function: Manages global static collections (GlobalRecipes, GlobalIngredients) to ensure data persistence across pages.
