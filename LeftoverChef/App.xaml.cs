@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// File: App.xaml.cs
+// Role: The central data hub of LeftoverChef.
+// Function: Manages global static collections (GlobalRecipes, GlobalIngredients) to ensure data persistence across pages.
+// Contains: Pre-set library of 20 Chinese and Western recipes.
+using System.Collections.ObjectModel;
 
 namespace LeftoverChef;
 
