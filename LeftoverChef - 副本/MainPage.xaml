@@ -14,16 +14,7 @@
                 <Label Text="LeftoverChef" FontSize="36" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#2C3E50"/>
                 <Label Text="Turn your leftovers into a feast!" FontSize="16" HorizontalOptions="Center" TextColor="#7F8C8D" Margin="0,0,0,20"/>
 
-                <Border Stroke="#80FFFFFF" StrokeThickness="1.5" StrokeShape="RoundRectangle 15" Padding="15">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#CCFFFFFF" Offset="0.0" />
-                            <GradientStop Color="#4DE3F2FD" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.1" Offset="0,5" Radius="10" />
-                    </Border.Shadow>
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#E3F2FD" Padding="15">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFridgeClicked"/>
                     </Border.GestureRecognizers>
@@ -36,16 +27,7 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Stroke="#80FFFFFF" StrokeThickness="1.5" StrokeShape="RoundRectangle 15" Padding="15">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#CCFFFFFF" Offset="0.0" />
-                            <GradientStop Color="#4DFFF3E0" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.1" Offset="0,5" Radius="10" />
-                    </Border.Shadow>
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#FFF3E0" Padding="15">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnStorageClicked"/>
                     </Border.GestureRecognizers>
@@ -58,16 +40,7 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Stroke="#80FFFFFF" StrokeThickness="1.5" StrokeShape="RoundRectangle 15" Padding="15">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#CCFFFFFF" Offset="0.0" />
-                            <GradientStop Color="#4DF3E5F5" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.1" Offset="0,5" Radius="10" />
-                    </Border.Shadow>
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#F3E5F5" Padding="15">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnSearchClicked"/>
                     </Border.GestureRecognizers>
@@ -80,16 +53,7 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <Border Stroke="#80FFFFFF" StrokeThickness="1.5" StrokeShape="RoundRectangle 15" Padding="15">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#CCFFFFFF" Offset="0.0" />
-                            <GradientStop Color="#4DE8F5E9" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.1" Offset="0,5" Radius="10" />
-                    </Border.Shadow>
+                <Border StrokeShape="RoundRectangle 15" BackgroundColor="#E8F5E9" Padding="15">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnCreateClicked"/>
                     </Border.GestureRecognizers>

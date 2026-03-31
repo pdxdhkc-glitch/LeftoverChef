@@ -12,6 +12,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        // 如果食谱库为空，初始化 20 道预设菜谱
         if (GlobalRecipes.Count == 0)
         {
             // --- 10 Chinese Recipes (中餐) ---
@@ -43,7 +44,7 @@ public partial class App : Application
     protected override Window CreateWindow(IActivationState? activationState) => new Window(new AppShell());
 }
 
-// 食谱类定义(Recipe Class Definition)
+// 食谱类定义
 public class Recipe
 {
     public string Name { get; set; } = string.Empty;
@@ -54,7 +55,7 @@ public class Recipe
     public string Description { get; set; } = string.Empty;
 }
 
-// 食材类定义(Food ingredient definition)
+// 食材类定义
 public class Ingredient
 {
     public string Name { get; set; } = string.Empty;

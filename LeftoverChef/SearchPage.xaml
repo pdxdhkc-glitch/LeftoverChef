@@ -1,21 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LeftoverChef.SearchPage"
              BackgroundImageSource="search_bg.jpg"
              Shell.NavBarIsVisible="False" NavigationPage.HasNavigationBar="False">
     <Grid RowDefinitions="*, Auto">
-        <VerticalStackLayout Padding="25" Spacing="15">
-            <Label Text="Quick Search" FontSize="30" FontAttributes="Bold" HorizontalOptions="Center" TextColor="White"/>
-            <Border BackgroundColor="White" Padding="5" StrokeShape="RoundRectangle 10">
-                <Grid ColumnDefinitions="*, Auto">
-                    <Entry x:Name="SearchEntry" Placeholder="Enter keywords..." TextColor="Black"/>
-                    <Button Grid.Column="1" Text="🔍" Clicked="OnSearchClicked" BackgroundColor="#2A009F"/>
-                </Grid>
-            </Border>
-            <ScrollView>
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="25" Spacing="15">
+                <Label Text="Quick Search" FontSize="30" FontAttributes="Bold" HorizontalOptions="Center" TextColor="White"/>
+
+                <Border BackgroundColor="White" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Entry x:Name="SearchEntry" Placeholder="Enter keywords..." TextColor="Black"/>
+                        <Button Grid.Column="1" Text="🔍" Clicked="OnSearchClicked" BackgroundColor="#2A009F"/>
+                    </Grid>
+                </Border>
+
                 <VerticalStackLayout x:Name="ResultsList" Spacing="10"/>
-            </ScrollView>
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
         <Button Grid.Row="1" Text="🏠 Home" Clicked="OnHomeClicked" BackgroundColor="#2A009F" HeightRequest="60" CornerRadius="0"/>
     </Grid>
 </ContentPage>

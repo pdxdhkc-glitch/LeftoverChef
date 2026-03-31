@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LeftoverChef.CreatePage"
@@ -8,21 +9,60 @@
             <Border BackgroundColor="#CCFFFFFF" Padding="20" StrokeShape="RoundRectangle 15">
                 <VerticalStackLayout Spacing="15">
                     <Label Text="Draft New Recipe" FontSize="26" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#2E7D32"/>
+
                     <Picker x:Name="CategoryPicker" Title="Select Category" TextColor="Black">
                         <Picker.Items>
                             <x:String>Chinese</x:String>
                             <x:String>Western</x:String>
                         </Picker.Items>
                     </Picker>
+
                     <Entry x:Name="NameEntry" Placeholder="Recipe Name" TextColor="Black"/>
+
                     <Entry x:Name="TimeEntry" Placeholder="Cooking Time" TextColor="Black"/>
+
                     <Entry x:Name="DescEntry" Placeholder="Story/Description" TextColor="Black"/>
+
                     <Editor x:Name="IngredientsEditor" Placeholder="Ingredients list..." HeightRequest="80" TextColor="Black"/>
+
                     <Editor x:Name="InstructionsEditor" Placeholder="Cooking instructions..." HeightRequest="120" TextColor="Black"/>
+
                     <Button Text="Save Recipe" Clicked="OnSaveClicked" BackgroundColor="#2E7D32" FontAttributes="Bold"/>
+
+                    <BoxView HeightRequest="1" Color="#AAAAAA" Margin="0,15"/>
+
+                    <Label Text="Reference Websites" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#555555"/>
+                    <Label Text="Click to get inspiration" FontSize="12" HorizontalOptions="Center" TextColor="#7F8C8D" Margin="0,0,0,10"/>
+
+                    <HorizontalStackLayout Spacing="25" HorizontalOptions="Center">
+                        <VerticalStackLayout Spacing="5" WidthRequest="70" HorizontalOptions="Center">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnWebsiteLinkTapped" CommandParameter="https://www.xiaohongshu.com"/>
+                            </VerticalStackLayout.GestureRecognizers>
+                            <Label Text="📕" FontSize="40" HorizontalOptions="Center"/>
+                            <Label Text="Red" FontSize="12" HorizontalOptions="Center" TextColor="#E53935"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5" WidthRequest="70" HorizontalOptions="Center">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnWebsiteLinkTapped" CommandParameter="https://www.xiachufang.com"/>
+                            </VerticalStackLayout.GestureRecognizers>
+                            <Label Text="👨‍🍳" FontSize="40" HorizontalOptions="Center"/>
+                            <Label Text="Kitchen" FontSize="12" HorizontalOptions="Center" TextColor="#FB8C00"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="5" WidthRequest="70" HorizontalOptions="Center">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnWebsiteLinkTapped" CommandParameter="https://www.meishij.net"/>
+                            </VerticalStackLayout.GestureRecognizers>
+                            <Label Text="🍳" FontSize="40" HorizontalOptions="Center"/>
+                            <Label Text="Foodie" FontSize="12" HorizontalOptions="Center" TextColor="#43A047"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
         </ScrollView>
+
         <Button Grid.Row="1" Text="🏠 Home" Clicked="OnHomeClicked" BackgroundColor="#2A009F" HeightRequest="60" CornerRadius="0"/>
     </Grid>
 </ContentPage>
