@@ -1,4 +1,7 @@
-using System;
+// File: FridgePage.xaml.cs
+// Role: Fridge inventory management and Smart Match logic.
+// Function: Implements the core 'Smart Match' algorithm to suggest recipes based on available ingredients.
+// Advanced: Features an Undo stack for ingredient deletion recovery.using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
