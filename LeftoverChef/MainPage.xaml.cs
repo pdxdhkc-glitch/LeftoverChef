@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks; // 确保顶部有这个引用
+﻿// File: MainPage.xaml.cs
+// Role: Main entry point and navigation controller.
+// Function: Handles page transitions and implements the 'ScaleToAsync' bounce animation for a tactile UI experience.
+using System.Threading.Tasks; // 确保顶部有这个引用
 
 namespace LeftoverChef;
 
