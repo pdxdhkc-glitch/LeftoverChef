@@ -4,6 +4,7 @@
 // Function: Manages global static collections (GlobalRecipes, GlobalIngredients) to ensure data persistence across pages.
 // Contains: Pre-set library of 20 Chinese and Western recipes.
 using System.Collections.ObjectModel;
+using SQLite; // 引入 SQLite 数据库功能
 
 namespace LeftoverChef;
 
@@ -12,6 +13,21 @@ public partial class App : Application
     // 全局静态变量，确保数据在页面跳转时不会丢失
     public static ObservableCollection<Recipe> GlobalRecipes { get; set; } = new ObservableCollection<Recipe>();
     public static ObservableCollection<Ingredient> GlobalIngredients { get; set; } = new ObservableCollection<Ingredient>();
+   
+    private static LocalDatabase? _database;
+    public static LocalDatabase Database
+    {
+        get
+        {
+            if (_database == null)
+            {
+                // 自动在手机的本地存储里建一个叫 LeftoverChef.db3 的数据库文件
+                string dbPath = Path.Combine(FileSystem.AppDataDirectory, "LeftoverChef.db3");
+                _database = new LocalDatabase(dbPath);
+            }
+            return _database;
+        }
+    }
 
     public App()
     {
@@ -51,6 +67,9 @@ public partial class App : Application
 // 食谱类定义(Recipe Class Definition)
 public class Recipe
 {
+    [PrimaryKey, AutoIncrement] // 新增：数据库主键，自动编号
+    public int Id { get; set; }
+
     public string Name { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
     public string CookingTime { get; set; } = string.Empty;
@@ -62,6 +81,9 @@ public class Recipe
 // 食材类定义(Food ingredient definition)
 public class Ingredient
 {
+    [PrimaryKey, AutoIncrement] // 新增：数据库主键，自动编号
+    public int Id { get; set; }
+
     public string Name { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty; // Fridge 或 Freezer
 }
