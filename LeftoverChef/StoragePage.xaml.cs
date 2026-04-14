@@ -120,7 +120,7 @@ public partial class StoragePage : ContentPage
             };
             card.GestureRecognizers.Add(tap);
 
-            // 删除键 (Delete button)
+            // 删除 (Delete button)
             var delBtn = new Button { Text = "🗑️", TextColor = Colors.Red, BackgroundColor = Colors.Transparent, FontSize = 20, Margin = new Thickness(0, 0, 10, 0) };
             delBtn.Clicked += (s, e) => { _undoStack.Push(new List<Recipe> { r }); App.GlobalRecipes.Remove(r); RefreshList(); };
 

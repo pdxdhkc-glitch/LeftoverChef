@@ -9,7 +9,7 @@ public partial class SearchPage : ContentPage
 
     private void OnSearchClicked(object sender, EventArgs e)
     {
-        // 搜之前清屏 (Clear previous results)
+
         ResultsList.Children.Clear();
 
         // 拿关键字防null (Get keyword, handle null)
