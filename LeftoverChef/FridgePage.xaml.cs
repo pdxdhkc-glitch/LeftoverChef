@@ -90,7 +90,11 @@ namespace LeftoverChef
         // 添加新食材 (Add ingredient)
         private async void OnAddIngredientClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NewIngredientEntry.Text)) return;
+            if (string.IsNullOrWhiteSpace(NewIngredientEntry.Text))
+            {
+                Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(100));
+                return;
+            }
 
             var newIng = new Ingredient { Name = NewIngredientEntry.Text, Category = _currentCategory };
 

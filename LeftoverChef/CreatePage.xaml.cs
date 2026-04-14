@@ -13,7 +13,9 @@ public partial class CreatePage : ContentPage
         // 必填项检查，防空数据 (Check required fields)
         if (CategoryPicker.SelectedIndex == -1 || string.IsNullOrWhiteSpace(NameEntry.Text))
         {
-            await DisplayAlertAsync("Notice", "Fill name and category", "OK"); return;
+            Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200));
+            await DisplayAlertAsync("Notice", "Fill name and category", "OK");
+            return;
         }
 
         // 1. 把表单打包成菜谱对象 (Package form into Recipe object)

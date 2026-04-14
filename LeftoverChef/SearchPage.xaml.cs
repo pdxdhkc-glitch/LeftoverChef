@@ -24,6 +24,7 @@ public partial class SearchPage : ContentPage
         // 判空拦截 (Prevent empty search)
         if (string.IsNullOrWhiteSpace(query))
         {
+            Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200));
             await this.DisplayAlertAsync("Notice", "Please enter a keyword to search.", "OK");
             return;
         }
