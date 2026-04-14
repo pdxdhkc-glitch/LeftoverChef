@@ -22,9 +22,9 @@ public class LocalDatabase
         _connection.CreateTableAsync<Ingredient>().Wait();
     }
 
-    // ============================================
-    // 🍱 菜谱操作 (Recipe operations)
-    // ============================================
+    
+    //  菜谱操作 (Recipe operations)
+    
     public async Task<List<Recipe>> GetRecipesAsync()
     {
         return await _connection.Table<Recipe>().ToListAsync();
@@ -41,9 +41,9 @@ public class LocalDatabase
         return await _connection.DeleteAsync(recipe);
     }
 
-    // ============================================
-    // 🥬 食材操作 (Ingredient operations)
-    // ============================================
+    
+    //  食材操作 (Ingredient operations)
+    
     public async Task<List<Ingredient>> GetIngredientsAsync()
     {
         return await _connection.Table<Ingredient>().ToListAsync();

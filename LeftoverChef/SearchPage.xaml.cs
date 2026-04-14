@@ -107,7 +107,7 @@ public partial class SearchPage : ContentPage
         }
     }
 
-    // 🏠 返回主页 (Navigate back to home)
+    // 返回主页 (Navigate back to home)
     private async void OnHomeClicked(object sender, EventArgs e)
     {
         await Navigation.PopAsync();
