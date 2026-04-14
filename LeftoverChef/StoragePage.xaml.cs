@@ -1,8 +1,12 @@
 ﻿// File: StoragePage.xaml.cs
 // Recipe library and detail view
 // Fetches data directly from SQLite
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.ApplicationModel;
 
 namespace LeftoverChef;
 
@@ -157,5 +161,47 @@ public partial class StoragePage : ContentPage
         h.IsVisible = false;
         s.Opacity = 0; s.IsVisible = true;
         await s.FadeToAsync(1, 150);
+    }
+
+    // 分享按钮逻辑 (Share button logic)
+    private async void OnShareClicked(object sender, EventArgs e)
+    {
+        // 提取当前展示的菜谱和食材 (Extract current recipe text)
+        string recipeName = DetailName.Text;
+        string ingredients = DetailIngredients.Text;
+        string shareText = $"Check out this recipe: {recipeName}\nIngredients: {ingredients}";
+
+        // 转义文本防链接报错 (Encode text for URL safe)
+        string encodedText = Uri.EscapeDataString(shareText);
+
+        // 底部弹窗让用户选平台 (Show action sheet)
+        string action = await DisplayActionSheetAsync("Share to...", "Cancel", null, "WhatsApp", "WeChat");
+
+        if (action == "WhatsApp")
+        {
+            try
+            {
+                // 先试着唤起APP带文字，失败就跳网页 (Try app protocol, fallback to web)
+                bool opened = await Launcher.Default.OpenAsync($"whatsapp://send?text={encodedText}");
+                if (!opened) await Launcher.Default.OpenAsync($"https://wa.me/?text={encodedText}");
+            }
+            catch
+            {
+                await Launcher.Default.OpenAsync($"https://wa.me/?text={encodedText}");
+            }
+        }
+        else if (action == "WeChat")
+        {
+            try
+            {
+                // 微信只支持跳APP主界面或跳官网 (WeChat opens app or official site)
+                bool opened = await Launcher.Default.OpenAsync("weixin://");
+                if (!opened) await Launcher.Default.OpenAsync("https://weixin.qq.com/");
+            }
+            catch
+            {
+                await Launcher.Default.OpenAsync("https://weixin.qq.com/");
+            }
+        }
     }
 }
