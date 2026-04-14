@@ -1,4 +1,38 @@
-1. Core action: Intelligent matching logic. This is the most powerful feature of this update, providing a true 'brain' for the application. Food link: Real time comparison between refrigerator inventory and recipe library has been achieved. Match sorting: This algorithm will automatically calculate the number of matching ingredients for each dish and recommend the top three dishes with the highest matching degree. Empty state handling: Added friendly pop-up reminders for empty refrigerators to improve robustness.
-UI/UX redesign completely rewrites the viewing layer, making the application look more like a commercial product. Dynamic Card System: Abandoning rigid lists, adopting dynamic border cards with shadows, rounded corners, and frosted glass textures. Recipe color bar differentiation: Add specific color blocks on the left side of the card, with orange representing Chinese cuisine (# E65100) and dark blue representing Western cuisine (# 283593), to achieve quick visual classification. Full page scrolling optimization: ScrollView has introduced all functional pages (warehouse, search, refrigerator), solving the pain point of incomplete display on small screen phones.
-3. Interactive enhancement Q-pop physical feedback: The ScaleToAsynchronous animation logic for all entrance buttons on the homepage has been updated, simulating a realistic sinking sensation when pressed. Fast page cutting: FadeToAync is used to achieve a smooth gradient page cutting effect, bidding farewell to stiff page flickering.
-4. Reliability and Logic: Introduced a stack data structure for deleting ingredients and formulas, supporting the "undo" operation after accidental deletion. Cross page synchronization: Use static ObservableCollection to ensure that recipes added by users in the 'Create Page' immediately appear in the 'Warehouse' and 'Search'.
+core functionality
+1. Intelligent inventory matching
+Dynamic comparison algorithm: The system will automatically compare the "refrigerator inventory" and "recipe demand" in the SQLite database.
+
+Missing reminder: In the search results, users can click the "Check" button, and the system will immediately calculate and list the missing ingredients in the recipe.
+
+2. Hardware level interactive experience (hardware level UX)
+Tactile feedback: When an input error or storage limit is reached, the underlying motor of the system will be called to provide vibration feedback, thereby enhancing interactive perception.
+
+Exception tolerance: This code implements try catch hardware protection to ensure that applications can still run stably in different hardware environments (such as simulators that do not support vibration).
+
+3. Visual storage control
+Capacity limit logic: The storage limit for refrigerators and freezers is 30 pieces.
+
+Real time progress bar: Use a dynamic progress bar to display storage ratios and automatically switch colors (green/orange/red) based on remaining space, achieving intuitive capacity monitoring.
+
+4. Social integration
+Cross platform sharing: supports one click sharing of selected recipes to WhatsApp and WeChat.
+
+Intelligent link construction: Automatically extract formula names and ingredient information, and construct shared text that complies with social platform protocols.
+
+tech stack
+Framework:. NET MAUI£¨C#/XAML£©
+
+Database: SQLite (local persistent storage)
+
+VCS: Git/GitHub (Professional PR Workflow)
+
+Concepts: SDLC, CRUD, asynchronous programming, UI/UX heuristics
+
+Best Practices for Git Version Control
+This project strictly follows the professional software development process and aims to achieve the highest standards of academic evaluation:
+
+Branch strategy: All new features are developed on separate feature branches.
+
+Pull Requests: Conduct code review and merging through the PR process to ensure the stability of the main branch.
+
+Conflict Resolution: Able to handle and manually resolve code conflicts to ensure smooth team collaboration.
