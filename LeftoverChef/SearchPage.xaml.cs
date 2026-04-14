@@ -1,7 +1,8 @@
 // File: SearchPage.xaml.cs
-// Search engine connected to DB
+// Search & Inventory Check
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 
@@ -14,14 +15,14 @@ public partial class SearchPage : ContentPage
         InitializeComponent();
     }
 
-    // 搜索按钮点击 (Search button click)
+    // 搜索逻辑 (Search logic)
     private async void OnSearchClicked(object sender, EventArgs e)
     {
-        // 去掉前后空格转小写 (Trim spaces and convert to lowercase)
+        // 格式化输入 (Normalize input)
         string query = SearchEntry.Text?.ToLower().Trim() ?? "";
         ResultsList.Children.Clear();
 
-        // 判空拦截 (Prevent empty search)
+        // 空输入检查 (Empty check)
         if (string.IsNullOrWhiteSpace(query))
         {
             Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200));
@@ -29,16 +30,16 @@ public partial class SearchPage : ContentPage
             return;
         }
 
-        // 抓取全部菜谱查库 (Fetch from DB)
+        // 从数据库取数据 (Fetch from DB)
         var allRecipes = await App.Database.GetRecipesAsync();
 
-        // 模糊匹配菜名和配料 (Fuzzy match name or ingredients)
+        // 模糊搜索 (Fuzzy match)
         var matches = allRecipes.Where(r =>
             (r.Name != null && r.Name.ToLower().Contains(query)) ||
             (r.Ingredients != null && r.Ingredients.ToLower().Contains(query))
         ).ToList();
 
-        // 没搜到给提示 (Show empty state message)
+        // 无结果处理 (Empty state)
         if (matches.Count == 0)
         {
             ResultsList.Children.Add(new Label
@@ -51,36 +52,37 @@ public partial class SearchPage : ContentPage
             return;
         }
 
-        // 遍历生成搜索结果卡片 (Generate result cards)
+        // 渲染列表 (Render cards)
         foreach (var r in matches)
         {
-            // 卡片外壳 (Card shell)
+            // 外边框 (Card container)
             var card = new Border
             {
                 StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 10 },
                 BackgroundColor = Color.FromRgba(255, 255, 255, 0.95),
-                StrokeThickness = 0, // 去掉边框 (Remove border)
-                Padding = new Thickness(0), // 内边距清零给彩条腾地方 (Reset padding for color bar)
+                StrokeThickness = 0,
+                Padding = new Thickness(0),
                 Margin = new Thickness(0, 5)
             };
 
-            // 左彩条，右文字 (Left color bar, right text)
+            // 布局分三列 (Grid layout)
             var grid = new Grid
             {
                 ColumnDefinitions = {
                     new ColumnDefinition(GridLength.Auto),
-                    new ColumnDefinition(GridLength.Star)
+                    new ColumnDefinition(GridLength.Star),
+                    new ColumnDefinition(GridLength.Auto)
                 }
             };
 
-            // 菜系彩条 (Category color bar)
+            // 左侧彩条 (Category bar)
             var colorBar = new BoxView
             {
                 WidthRequest = 6,
                 BackgroundColor = r.Category == "Chinese" ? Color.FromArgb("#E65100") : Color.FromArgb("#283593")
             };
 
-            // 文字排版 (Text layout)
+            // 文字信息 (Text info)
             var textLayout = new VerticalStackLayout
             {
                 VerticalOptions = LayoutOptions.Center,
@@ -90,24 +92,76 @@ public partial class SearchPage : ContentPage
             textLayout.Children.Add(new Label { Text = r.Name, FontSize = 18, FontAttributes = FontAttributes.Bold, TextColor = Colors.Black });
             textLayout.Children.Add(new Label { Text = "⏱️ " + r.CookingTime + " | " + r.Category, FontSize = 13, TextColor = Color.FromArgb("#7F8C8D") });
 
-            // 拼装卡片 (Assemble card)
+            //检查库存 (Inventory check button)
+            var checkBtn = new Button
+            {
+                Text = "🛒 Check",
+                FontSize = 12,
+                Padding = new Thickness(10, 5),
+                Margin = new Thickness(0, 0, 15, 0),
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.FromArgb("#F39C12"),
+                TextColor = Colors.White,
+                CornerRadius = 8
+            };
+
+            // 比对逻辑 (Comparison logic)
+            checkBtn.Clicked += async (s, args) =>
+            {
+                // 1. 获取库存 (Get fridge items)
+                var myIngredients = await App.Database.GetIngredientsAsync();
+                var myInvNames = myIngredients.Select(i => i.Name.ToLower().Trim()).ToList();
+
+                // 2. 解析菜谱配料 (Parse required items)
+                var requiredItems = r.Ingredients.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                 .Select(i => i.Trim().ToLower())
+                                                 .ToList();
+
+                var missingItems = new List<string>();
+
+                // 3. 找缺漏 (Identify missing items)
+                foreach (var req in requiredItems)
+                {
+                    // 包含匹配 (Contains check)
+                    if (!myInvNames.Any(inv => inv.Contains(req) || req.Contains(inv)))
+                    {
+                        missingItems.Add(req);
+                    }
+                }
+
+                // 4. 结果反馈 (Show results)
+                if (missingItems.Count == 0)
+                {
+                    await DisplayAlertAsync("Great!", "You have all the ingredients in your fridge!", "Awesome");
+                }
+                else
+                {
+                    // 格式化清单 (Format list)
+                    var missingText = string.Join("\n- ", missingItems.Select(m => char.ToUpper(m[0]) + m.Substring(1)));
+                    await DisplayAlertAsync("Missing Ingredients", $"You need to buy:\n- {missingText}", "Got it");
+                }
+            };
+
+            // 组装 UI (Assemble card)
             grid.Add(colorBar, 0);
             grid.Add(textLayout, 1);
+            grid.Add(checkBtn, 2);
             card.Content = grid;
 
-            // 点击进详情 (Tap to see details)
+            // 详情跳转 (Go to details)
             var tap = new TapGestureRecognizer();
             tap.Tapped += async (s, args) =>
             {
                 await Navigation.PushAsync(new StoragePage(r));
             };
-            card.GestureRecognizers.Add(tap);
+            // 绑定文字点击 (Bind text click)
+            textLayout.GestureRecognizers.Add(tap);
 
             ResultsList.Children.Add(card);
         }
     }
 
-    // 返回主页 (Navigate back to home)
+    // 回主页 (Back to home)
     private async void OnHomeClicked(object sender, EventArgs e)
     {
         await Navigation.PopAsync();
