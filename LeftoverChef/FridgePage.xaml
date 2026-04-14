@@ -65,19 +65,31 @@
                 </VerticalStackLayout>
             </ScrollView>
 
-            <Grid x:Name="IngredientListGrid" Opacity="0" IsVisible="False" RowDefinitions="Auto, Auto, *">
+            <Grid x:Name="IngredientListGrid" Opacity="0" IsVisible="False" RowDefinitions="Auto, Auto, Auto, *">
                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto" Padding="15" BackgroundColor="#80FFFFFF">
                     <Label Grid.Column="0" x:Name="ListTitleLabel" FontAttributes="Bold" FontSize="18" VerticalOptions="Center" TextColor="#333333"/>
                     <Button Grid.Column="1" Text="🗑️ Clear" Clicked="OnDeleteAllClicked" FontSize="11" Margin="5,0"/>
                     <Button Grid.Column="2" Text="↩️ Undo" Clicked="OnUndoClicked" FontSize="11"/>
                 </Grid>
-                <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Padding="15,10" BackgroundColor="#80FFFFFF">
+
+                <Grid Grid.Row="1" Padding="15,10,15,5" BackgroundColor="#80FFFFFF">
+                    <VerticalStackLayout Spacing="5">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Text="Storage Capacity" FontSize="13" TextColor="#555555" FontAttributes="Bold"/>
+                            <Label x:Name="CapacityLabel" Grid.Column="1" Text="0 / 30" FontSize="13" TextColor="#555555" FontAttributes="Bold"/>
+                        </Grid>
+                        <ProgressBar x:Name="CapacityProgressBar" Progress="0.0" ProgressColor="#28A745" HeightRequest="8"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Grid Grid.Row="2" ColumnDefinitions="*, Auto" Padding="15,5,15,10" BackgroundColor="#80FFFFFF">
                     <Border Grid.Column="0" StrokeShape="RoundRectangle 10" BackgroundColor="#E6FFFFFF" StrokeThickness="0" Margin="0,0,10,0">
                         <Entry x:Name="NewIngredientEntry" Placeholder="Add item..." FontSize="16" Margin="10,0" TextColor="Black"/>
                     </Border>
                     <Button Grid.Column="1" Text="➕" Clicked="OnAddIngredientClicked" BackgroundColor="#28A745" TextColor="White" WidthRequest="50"/>
                 </Grid>
-                <ScrollView Grid.Row="2" Padding="15">
+
+                <ScrollView Grid.Row="3" Padding="15">
                     <VerticalStackLayout x:Name="IngredientListContainer" Spacing="10">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
