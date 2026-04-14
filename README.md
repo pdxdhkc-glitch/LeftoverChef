@@ -1,3 +1,4 @@
+# LeftoverChef is a smart app.
 core functionality
 1. Intelligent inventory matching
 Dynamic comparison algorithm: The system will automatically compare the "refrigerator inventory" and "recipe demand" in the SQLite database.
