@@ -1,64 +1,62 @@
-﻿using SQLite;
+﻿// File: LocalDatabase.cs
+// SQLite database manager
+// Handles all data CRUD operations
+using SQLite;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LeftoverChef;
 
 public class LocalDatabase
 {
-    // 定义一个数据库连接
-    private readonly SQLiteAsyncConnection _database;
+    // 数据库连接对象，读写全靠它 (Database connection object)
+    private readonly SQLiteAsyncConnection _connection;
 
-    // 构造函数：告诉系统数据库建在哪里，并建表
     public LocalDatabase(string dbPath)
     {
-        _database = new SQLiteAsyncConnection(dbPath);
+        // 连上数据库文件 (Connect to DB file)
+        _connection = new SQLiteAsyncConnection(dbPath);
 
-        // 自动根据你的模型创建这两张表（如果表已经存在，它什么都不做）
-        _database.CreateTableAsync<Recipe>().Wait();
-        _database.CreateTableAsync<Ingredient>().Wait();
+        // 如果没表就建表 (Create tables if not exist)
+        _connection.CreateTableAsync<Recipe>().Wait();
+        _connection.CreateTableAsync<Ingredient>().Wait();
     }
 
-    // ==========================================
-    // Recipe (菜谱) 的数据库操作
-    // ==========================================
-
-    // 获取所有菜谱
-    public Task<List<Recipe>> GetRecipesAsync()
+    // ============================================
+    // 🍱 菜谱操作 (Recipe operations)
+    // ============================================
+    public async Task<List<Recipe>> GetRecipesAsync()
     {
-        return _database.Table<Recipe>().ToListAsync();
+        return await _connection.Table<Recipe>().ToListAsync();
     }
 
-    // 把新菜谱存进数据库
-    public Task<int> SaveRecipeAsync(Recipe recipe)
+    public async Task<int> SaveRecipeAsync(Recipe recipe)
     {
-        return _database.InsertAsync(recipe);
+        if (recipe.Id != 0) return await _connection.UpdateAsync(recipe);
+        else return await _connection.InsertAsync(recipe);
     }
 
-    // 从数据库里彻底删掉某道菜
-    public Task<int> DeleteRecipeAsync(Recipe recipe)
+    public async Task<int> DeleteRecipeAsync(Recipe recipe)
     {
-        return _database.DeleteAsync(recipe);
+        return await _connection.DeleteAsync(recipe);
     }
 
-
-    // ==========================================
-    // Ingredient (食材) 的数据库操作
-    // ==========================================
-
-    // 获取所有冰箱食材
-    public Task<List<Ingredient>> GetIngredientsAsync()
+    // ============================================
+    // 🥬 食材操作 (Ingredient operations)
+    // ============================================
+    public async Task<List<Ingredient>> GetIngredientsAsync()
     {
-        return _database.Table<Ingredient>().ToListAsync();
+        return await _connection.Table<Ingredient>().ToListAsync();
     }
 
-    // 把买来的新菜存进数据库
-    public Task<int> SaveIngredientAsync(Ingredient ingredient)
+    public async Task<int> SaveIngredientAsync(Ingredient item)
     {
-        return _database.InsertAsync(ingredient);
+        if (item.Id != 0) return await _connection.UpdateAsync(item);
+        else return await _connection.InsertAsync(item);
     }
 
-    // 从数据库里删掉吃完的食材
-    public Task<int> DeleteIngredientAsync(Ingredient ingredient)
+    public async Task<int> DeleteIngredientAsync(Ingredient item)
     {
-        return _database.DeleteAsync(ingredient);
+        return await _connection.DeleteAsync(item);
     }
 }
