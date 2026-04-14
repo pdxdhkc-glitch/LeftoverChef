@@ -1,7 +1,7 @@
 ﻿// File: MainPage.xaml.cs
-// Role: Main entry point and navigation controller.
-// Function: Handles page transitions and implements the 'ScaleToAsync' bounce animation for a tactile UI experience.
-using System.Threading.Tasks; // 确保顶部有这个引用
+// Main page & navigation
+// Handles clicks and bounce animations
+using System.Threading.Tasks; // 必须引用这个做动画 (Required for animations)
 
 namespace LeftoverChef;
 
@@ -14,19 +14,19 @@ public partial class MainPage : ContentPage
 
     private async Task AnimateClick(View view)
     {
-        // 第一阶段
-        await view.ScaleTo(0.95, 100, Easing.CubicOut);
+        // 按下变小 (Shrink down)
+        await view.ScaleToAsync(0.95, 100, Easing.CubicOut);
 
-        // 第二阶段
-        await view.ScaleTo(1.0, 150, Easing.BounceOut);
+        // 弹回原样 (Bounce back)
+        await view.ScaleToAsync(1.0, 150, Easing.BounceOut);
     }
 
     private async void OnFridgeClicked(object sender, EventArgs e)
     {
-        // 触发动画 (Trigger animation)
+        // 先播动画 (Play animation first)
         if (sender is View view) await AnimateClick(view);
 
-        // 动画执行完后，再进行原本的页面跳转
+        // 播完再跳页 (Navigate after animation)
         await Navigation.PushAsync(new FridgePage());
     }
 
@@ -50,8 +50,9 @@ public partial class MainPage : ContentPage
 
     private async void OnExitClicked(object sender, EventArgs e)
     {
-        if (sender is View view) await AnimateClick(view); // 退出按钮动画
+        if (sender is View view) await AnimateClick(view); // 退出按钮动画 (Exit btn animation)
 
+        // 弹窗确认退出 (Confirm exit)
         bool answer = await DisplayAlertAsync("Exit", "Are you sure you want to exit?", "Yes", "No");
         if (answer)
         {
