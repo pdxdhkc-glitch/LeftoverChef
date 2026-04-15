@@ -1,5 +1,5 @@
 // File: FridgePage.xaml.cs
-// 冰箱库存与智能匹配 (Fridge & Smart Match)
+// Fridge & Smart Match
 using System;
 using System.Linq;
 using System.Threading.Tasks;

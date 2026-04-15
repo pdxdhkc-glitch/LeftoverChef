@@ -2,7 +2,7 @@
 // Main entry and data hub of the app
 // Manages global variables and keeps data safe
 using System.Collections.ObjectModel;
-using SQLite; // 引入 SQLite 数据库插件 (Import SQLite plugin)
+using SQLite; 
 using System.IO;
 
 namespace LeftoverChef;
@@ -63,10 +63,10 @@ public partial class App : Application
         SeedDatabaseAsync();
     }
 
-    // 自动把那 20 道默认菜谱搬进数据库里的方法 (Method to seed default recipes into the DB)
+    //  20 道默认菜谱搬进数据库 (Method to seed default recipes into the DB)
     private async void SeedDatabaseAsync()
     {
-        // 先去查一下硬盘里的数据库现在有几道菜 (Check how many recipes are currently in the DB)
+        // 查硬盘里的数据库有几道菜 (Check how many recipes are currently in the DB)
         var dbRecipes = await Database.GetRecipesAsync();
 
         // 如果少于20道，就强制补齐初始数据 (If less than 20, force insert the defaults)

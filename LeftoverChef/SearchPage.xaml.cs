@@ -25,12 +25,14 @@ public partial class SearchPage : ContentPage
         // 空输入检查 (Empty check)
         if (string.IsNullOrWhiteSpace(query))
         {
-            Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200));
+            // 震动保护 (Vibration fallback)
+            try { Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200)); } catch { }
+
             await this.DisplayAlertAsync("Notice", "Please enter a keyword to search.", "OK");
             return;
         }
 
-        // 从数据库取数据 (Fetch from DB)
+        // 取数据 (Fetch from DB)
         var allRecipes = await App.Database.GetRecipesAsync();
 
         // 模糊搜索 (Fuzzy match)
