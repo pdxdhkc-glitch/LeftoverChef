@@ -1,7 +1,7 @@
 ﻿// File: MainPage.xaml.cs
 // Main page & navigation
 // Handles clicks and bounce animations
-using System.Threading.Tasks; // 必须引用这个做动画 (Required for animations)
+using System.Threading.Tasks; //  Required for animations
 
 namespace LeftoverChef;
 
@@ -14,19 +14,19 @@ public partial class MainPage : ContentPage
 
     private async Task AnimateClick(View view)
     {
-        // 按下变小 (Shrink down)
+        // Shrink down
         await view.ScaleToAsync(0.95, 100, Easing.CubicOut);
 
-        // 弹回原样 (Bounce back)
+        // Bounce back
         await view.ScaleToAsync(1.0, 150, Easing.BounceOut);
     }
 
     private async void OnFridgeClicked(object sender, EventArgs e)
     {
-        // 先播动画 (Play animation first)
+        // Play animation first
         if (sender is View view) await AnimateClick(view);
 
-        // 播完再跳页 (Navigate after animation)
+        // Navigate after animation
         await Navigation.PushAsync(new FridgePage());
     }
 

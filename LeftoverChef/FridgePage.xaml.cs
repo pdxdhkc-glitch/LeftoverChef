@@ -14,12 +14,12 @@ namespace LeftoverChef
         private string _currentCategory = "";
         private int _currentState = 0;
 
-        // 容量上限 (Max capacity)
+        // Max capacity
         private const int MAX_CAPACITY = 30;
 
         public FridgePage() { InitializeComponent(); }
 
-        // 智能推荐逻辑 (Smart match logic)
+        // Smart match logic
         private async void OnSmartMatchTapped(object sender, EventArgs e)
         {
             var allIngredients = await App.Database.GetIngredientsAsync();
@@ -59,7 +59,7 @@ namespace LeftoverChef
             }
         }
 
-        // 分类切换 (Category switch)
+        // Category switch
         private async void OnCategoryTapped(object sender, TappedEventArgs e)
         {
             if (e.Parameter is string category)
@@ -75,23 +75,23 @@ namespace LeftoverChef
             }
         }
 
-        // 添加食材 (Add item)
+        // Add item
         private async void OnAddIngredientClicked(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NewIngredientEntry.Text))
             {
-                // 震动保护 (Vibration fallback)
+                // Vibration fallback
                 try { Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(100)); } catch { }
                 return;
             }
 
-            // 容量检查 (Capacity check)
+            // Capacity check
             var allIngredients = await App.Database.GetIngredientsAsync();
             int currentCount = allIngredients.Count(i => i.Category == _currentCategory);
 
             if (currentCount >= MAX_CAPACITY)
             {
-                // 满载拦截与震动保护 (Block and vibrate safely)
+                // Block and vibrate safely
                 try { Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200)); } catch { }
                 await this.DisplayAlertAsync("Storage Full", "You can only store up to 30 items here.", "OK");
                 return;
@@ -106,7 +106,7 @@ namespace LeftoverChef
             await RefreshListAsync();
         }
 
-        // 删除单项 (Delete item)
+        // Delete item
         private async void OnDeleteIngredientClicked(object sender, EventArgs e)
         {
             if (sender is Button button && button.CommandParameter is Ingredient item)
@@ -122,7 +122,7 @@ namespace LeftoverChef
             }
         }
 
-        // 清空分类 (Clear all)
+        // Clear all
         private async void OnDeleteAllClicked(object sender, EventArgs e)
         {
             var allIngredients = await App.Database.GetIngredientsAsync();
@@ -141,7 +141,7 @@ namespace LeftoverChef
             }
         }
 
-        // 撤销操作 (Undo action)
+        // Undo action
         private async void OnUndoClicked(object sender, EventArgs e)
         {
             if (_undoStack.Count > 0)
@@ -157,7 +157,7 @@ namespace LeftoverChef
             else await this.DisplayAlertAsync("Undo", "Nothing to restore", "OK");
         }
 
-        // 底部导航 (Bottom navigation)
+        // Bottom navigation
         private async void OnDynamicBottomClicked(object sender, EventArgs e)
         {
             if (_currentState == 1)
@@ -172,7 +172,7 @@ namespace LeftoverChef
             }
         }
 
-        // 渐变动画 (Fade transition)
+        // Fade transition
         private async Task TransitionViews(VisualElement viewToHide, VisualElement viewToShow)
         {
             await viewToHide.FadeToAsync(0, 150);
@@ -182,19 +182,19 @@ namespace LeftoverChef
             await viewToShow.FadeToAsync(1, 150);
         }
 
-        // 刷新列表与进度条 (Refresh list and progress UI)
+        // Refresh list and progress UI
         private async Task RefreshListAsync()
         {
             var allIngredients = await App.Database.GetIngredientsAsync();
             var filtered = allIngredients.Where(i => i.Category == _currentCategory).ToList();
             BindableLayout.SetItemsSource(IngredientListContainer, filtered);
 
-            // 更新进度 UI (Update capacity UI)
+            // Update capacity UI
             int count = filtered.Count;
             CapacityLabel.Text = $"{count} / {MAX_CAPACITY}";
             CapacityProgressBar.Progress = (double)count / MAX_CAPACITY;
 
-            // 进度条变色逻辑 (Color threshold logic)
+            // Color threshold logic
             if (count >= MAX_CAPACITY)
             {
                 CapacityProgressBar.ProgressColor = Colors.Red;

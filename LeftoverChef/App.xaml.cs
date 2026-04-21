@@ -9,7 +9,7 @@ namespace LeftoverChef;
 
 public partial class App : Application
 {
-    // 全局静态列表用来防崩溃的，存内存里 (Global static lists, kept in memory as a fallback)
+    // Global static lists, kept in memory as a fallback
     public static ObservableCollection<Recipe> GlobalRecipes { get; set; } = new ObservableCollection<Recipe>();
     public static ObservableCollection<Ingredient> GlobalIngredients { get; set; } = new ObservableCollection<Ingredient>();
 
@@ -20,7 +20,7 @@ public partial class App : Application
         {
             if (_database == null)
             {
-                // 在手机本地沙盒里建一个叫 LeftoverChef.db3 的真实数据库文件 (Create the DB file in the phone's local storage)
+                // Create the DB file in the phone's local storage
                 string dbPath = Path.Combine(FileSystem.AppDataDirectory, "LeftoverChef.db3");
                 _database = new LocalDatabase(dbPath);
             }
@@ -34,7 +34,7 @@ public partial class App : Application
 
         if (GlobalRecipes.Count == 0)
         {
-            // --- 10 道中餐默认数据 (10 default Chinese Recipes) ---
+            // --- 10 default Chinese Recipes ---
             GlobalRecipes.Add(new Recipe { Name = "Kung Pao Chicken", Category = "Chinese", CookingTime = "25 mins", Ingredients = "Chicken, Peanuts, Chili", Instructions = "Stir-fry chicken with peanuts and spicy sauce.", Description = "Classic spicy Sichuan dish." });
             GlobalRecipes.Add(new Recipe { Name = "Mapo Tofu", Category = "Chinese", CookingTime = "20 mins", Ingredients = "Tofu, Minced Pork, Bean Paste", Instructions = "Simmer tofu in spicy minced meat sauce.", Description = "Famous numbing and spicy tofu." });
             GlobalRecipes.Add(new Recipe { Name = "Peking Duck", Category = "Chinese", CookingTime = "120 mins", Ingredients = "Duck, Honey, Pancakes", Instructions = "Roast duck and serve with pancakes.", Description = "World famous crispy duck." });
@@ -46,7 +46,7 @@ public partial class App : Application
             GlobalRecipes.Add(new Recipe { Name = "Boiled Beef", Category = "Chinese", CookingTime = "45 mins", Ingredients = "Beef, Cabbage, Chili Oil", Instructions = "Poach beef in fiery broth over cabbage.", Description = "Sichuan spicy favorite." });
             GlobalRecipes.Add(new Recipe { Name = "Char Siu", Category = "Chinese", CookingTime = "60 mins", Ingredients = "Pork, Honey, Hoisin Sauce", Instructions = "Marinate and roast until glazed.", Description = "Sweet Cantonese BBQ pork." });
 
-            // --- 10 道西餐默认数据 (10 default Western Recipes) ---
+            // --- 10 default Western Recipes ---
             GlobalRecipes.Add(new Recipe { Name = "Beef Wellington", Category = "Western", CookingTime = "90 mins", Ingredients = "Beef, Pastry, Mushrooms", Instructions = "Wrap beef in pastry and bake golden.", Description = "Elegant English masterpiece." });
             GlobalRecipes.Add(new Recipe { Name = "Spaghetti Carbonara", Category = "Western", CookingTime = "20 mins", Ingredients = "Pasta, Egg, Guanciale", Instructions = "Mix eggs and cheese into hot pasta.", Description = "Rich and creamy Roman pasta." });
             GlobalRecipes.Add(new Recipe { Name = "Margherita Pizza", Category = "Western", CookingTime = "25 mins", Ingredients = "Dough, Tomato, Mozzarella", Instructions = "Bake dough with fresh toppings.", Description = "Authentic Italian flavors." });
@@ -59,20 +59,20 @@ public partial class App : Application
             GlobalRecipes.Add(new Recipe { Name = "Eggs Benedict", Category = "Western", CookingTime = "25 mins", Ingredients = "Muffin, Poached Egg, Hollandaise", Instructions = "Top toasted muffin with egg and sauce.", Description = "Decadent brunch favorite." });
         }
 
-        // App 刚启动时，检查数据库要不要塞初始数据 (Check and sync DB on startup)
+        // Check and sync DB on startup
         SeedDatabaseAsync();
     }
 
-    //  20 道默认菜谱搬进数据库 (Method to seed default recipes into the DB)
+    //  Method to seed default recipes into the DB
     private async void SeedDatabaseAsync()
     {
-        // 查硬盘里的数据库有几道菜 (Check how many recipes are currently in the DB)
+        // Check how many recipes are currently in the DB
         var dbRecipes = await Database.GetRecipesAsync();
 
-        // 如果少于20道，就强制补齐初始数据 (If less than 20, force insert the defaults)
+        // If less than 20, force insert the defaults
         if (dbRecipes.Count < 20)
         {
-            // 遍历内存里的默认菜，挨个存进真实的数据库 (Loop through memory recipes and save to DB)
+            // Loop through memory recipes and save to DB
             foreach (var recipe in GlobalRecipes)
             {
                 var newRecipeForDb = new Recipe
@@ -93,10 +93,10 @@ public partial class App : Application
     protected override Window CreateWindow(IActivationState? activationState) => new Window(new AppShell());
 }
 
-// 菜谱的数据模型长这样 (Recipe data model)
+// Recipe data model
 public class Recipe
 {
-    [PrimaryKey, AutoIncrement] // 给数据库用的唯一身份证号，自动递增 (Primary key for DB, auto-increments)
+    [PrimaryKey, AutoIncrement] // Primary key for DB, auto-increments
     public int Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
@@ -107,12 +107,12 @@ public class Recipe
     public string Description { get; set; } = string.Empty;
 }
 
-// 冰箱里食材的数据模型 (Ingredient data model)
+// Ingredient data model
 public class Ingredient
 {
-    [PrimaryKey, AutoIncrement] // 给数据库用的唯一身份证号，自动递增 (Primary key for DB, auto-increments)
+    [PrimaryKey, AutoIncrement] // Primary key for DB, auto-increments
     public int Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
-    public string Category { get; set; } = string.Empty; // 用来区分是放冷藏(Fridge)还是冷冻(Freezer)
+    public string Category { get; set; } = string.Empty; 
 }

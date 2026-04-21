@@ -9,21 +9,21 @@ namespace LeftoverChef;
 
 public class LocalDatabase
 {
-    // 数据库连接对象，读写全靠它 (Database connection object)
+    // Database connection object
     private readonly SQLiteAsyncConnection _connection;
 
     public LocalDatabase(string dbPath)
     {
-        // 连上数据库文件 (Connect to DB file)
+        // Connect to DB file
         _connection = new SQLiteAsyncConnection(dbPath);
 
-        // 如果没表就建表 (Create tables if not exist)
+        // Create tables if not exist
         _connection.CreateTableAsync<Recipe>().Wait();
         _connection.CreateTableAsync<Ingredient>().Wait();
     }
 
     
-    //  菜谱操作 (Recipe operations)
+    //  Recipe operations
     
     public async Task<List<Recipe>> GetRecipesAsync()
     {
@@ -42,7 +42,7 @@ public class LocalDatabase
     }
 
     
-    //  食材操作 (Ingredient operations)
+    //  Ingredient operations
     
     public async Task<List<Ingredient>> GetIngredientsAsync()
     {
