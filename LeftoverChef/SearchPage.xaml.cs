@@ -25,8 +25,15 @@ public partial class SearchPage : ContentPage
         // Empty check
         if (string.IsNullOrWhiteSpace(query))
         {
-            // Vibration fallback
-            try { Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200)); } catch { }
+            // Vibration fallback with Debug log
+            try
+            {
+                
+                System.Diagnostics.Debug.WriteLine("=== 📱 Trigger system vibration！Bzzzz! ===");
+
+                Microsoft.Maui.Devices.Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200));
+            }
+            catch { }
 
             await this.DisplayAlertAsync("Notice", "Please enter a keyword to search.", "OK");
             return;
