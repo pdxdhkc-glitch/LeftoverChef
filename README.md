@@ -1,4 +1,4 @@
-# LeftoverChef is a smart app.
+
 core functionality
 1. Intelligent inventory matching
 Dynamic comparison algorithm: The system will automatically compare the "refrigerator inventory" and "recipe demand" in the SQLite database.
@@ -21,7 +21,7 @@ Cross platform sharing: supports one click sharing of selected recipes to WhatsA
 Intelligent link construction: Automatically extract formula names and ingredient information, and construct shared text that complies with social platform protocols.
 
 tech stack
-Framework:. NET MAUI£¨C#/XAML£©
+Framework:. NET MAUIÂ£Â¨C#/XAMLÂ£Â©
 
 Database: SQLite (local persistent storage)
 
