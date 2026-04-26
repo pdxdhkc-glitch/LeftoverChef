@@ -1,9 +1,13 @@
-// File: App.xaml.cs
+﻿// File: App.xaml.cs
 // Main entry and data hub of the app
 // Manages global variables and keeps data safe
+using System;
 using System.Collections.ObjectModel;
-using SQLite; 
+using SQLite;
 using System.IO;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.Core;         // Fix: Import V14 core library
+using Plugin.LocalNotification.Core.Models;  // Fix: Import V14 Request data models
 
 namespace LeftoverChef;
 
@@ -63,6 +67,51 @@ public partial class App : Application
         SeedDatabaseAsync();
     }
 
+    // ⭐ Added: App Lifecycle - OnStart (Check permissions and schedule here)
+    protected override async void OnStart()
+    {
+        base.OnStart();
+
+        // 1. Check and request notification permission
+        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+        {
+            await LocalNotificationCenter.Current.RequestNotificationPermission();
+        }
+
+        // 2. Schedule after permission is handled
+        ScheduleDailyCookingReminder();
+    }
+
+    // Added: Daily 5 PM notification logic
+    private void ScheduleDailyCookingReminder()
+    {
+        // 1. Get the exact time for 5 PM (17:00) today
+        var notifyTime = DateTime.Today.AddHours(17);
+        
+
+        // 2. Fallback logic: If the user opens the app after 5 PM, schedule the first reminder for 5 PM tomorrow
+        if (DateTime.Now > notifyTime)
+        {
+                   notifyTime = notifyTime.AddDays(1);
+        }
+
+        // 3. Build the notification request
+        var request = new NotificationRequest
+        {
+            NotificationId = 1001, // Fixed ID to prevent duplicate notifications
+            Title = "LeftoverChef 👨‍🍳",
+            Description = "It's 5 PM! Time to check your fridge and cook something delicious.",
+            Schedule = new NotificationRequestSchedule
+            {
+                NotifyTime = notifyTime,
+                RepeatType = NotificationRepeat.Daily // Set to repeat daily
+            }
+        };
+
+        // 4. Send to the system local notification center
+        LocalNotificationCenter.Current.Show(request);
+    }
+
     //  Method to seed default recipes into the DB
     private async void SeedDatabaseAsync()
     {
@@ -114,5 +163,5 @@ public class Ingredient
     public int Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
-    public string Category { get; set; } = string.Empty; 
+    public string Category { get; set; } = string.Empty;
 }
